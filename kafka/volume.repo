@@ -1,0 +1,5 @@
+[Volume]
+name=Volume
+baseurl=https://volume.jfrog.io/volume/volume-rpm/
+enabled=1
+gpgcheck=0
