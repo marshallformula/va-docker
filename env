@@ -1,0 +1,20 @@
+MYSQL=vmysql
+MYSQL_URL=jdbc:mysql://vmysql:3306/volume_users
+MYSQL_ADMINUSER=admin
+MYSQL_ADMINPASS=password
+
+# for docker mysql
+MYSQL_ROOT_PASSWORD=password
+MYSQL_DATABASE=volume_users
+
+GATEWAY_PASSWORD=password
+MANAGER_PASSWORD=password
+GRAPH_HOST=neo
+GRAPH_USER=neo4j
+GRAPH_PASSWORD=password
+ZOOKEEPER_CONNECT=zoo1:2181,zoo2:2181,zoo3:2181
+KAFKA_CONNECT=zoo1:9092,zoo2:9092,zoo3:9092
+GATEWAY_ELB=gateway:8080
+MANAGER_OAUTH_PASSWORD=mopassword
+GATEWAY_OAUTH_PASSWORD=gopassword
+ZOO_SERVERS=server.1=zoo1:2888:3888 server.2=zoo2:2888:3888 server.3=zoo3:2888:3888

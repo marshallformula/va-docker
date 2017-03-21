@@ -1,35 +1,34 @@
 #!/bin/bash
-
 echo "============================="
-echo "Manager Initialization Script"
+echo "Gateway Initialization Script"
 echo "============================="
 
-for file in /va/volume-manager/build/dist/*.noarch.rpm; do
+for file in /va/volume-gateway/build/dist/*.noarch.rpm; do
   rpm -ivh "$file"
 done;
 
 # for docker
-SERVICE_FILE=/etc/init.d/volume-manager
+SERVICE_FILE=/etc/init.d/volume-gateway
 if [[ -f $SERVICE_FILE ]]; then
   sed -i "/serviceUser=\"va\"/c\serviceUser=\"root\"" $SERVICE_FILE
   sed -i "/serviceGroup=\"va\"/c\serviceGroup=\"root\"" $SERVICE_FILE
 fi
 
-CONF_FILE=/etc/volume-manager/application.properties
+CONF_FILE=/etc/volume-gateway/application.properties
 if [[ -f $CONF_FILE ]]; then
+  sed -i "/kafka.servers=/c\kafka.servers=${KAFKA_CONNECT}" $CONF_FILE
+  sed -i "/zookeeper.servers=/c\zookeeper.servers=${ZOOKEEPER_CONNECT}" $CONF_FILE
   sed -i "/graph.url=/c\graph.url=bolt://${GRAPH_HOST}:7687" $CONF_FILE
   sed -i "/graph.username=/c\graph.username=${GRAPH_USER}" $CONF_FILE
   sed -i "/graph.password=/c\graph.password=${GRAPH_PASSWORD}" $CONF_FILE
-  sed -i "/zookeeper.connect=/c\zookeeper.connect=${ZOOKEEPER_CONNECT}" $CONF_FILE
-  sed -i "/spring.datasource.url=/c\spring.datasource.url=${MYSQL_URL}" $CONF_FILE
-  sed -i "/spring.datasource.password=/c\spring.datasource.password=${MANAGER_PASSWORD}" $CONF_FILE
-  sed -i "/security.oauth2.client.clientSecret=/c\security.oauth2.client.clientSecret=${MANAGER_OAUTH_PASSWORD}" $CONF_FILE
+  sed -i "/security.oauth2.client.clientSecret=/c\security.oauth2.client.clientSecret=${GATEWAY_OAUTH_PASSWORD}" $CONF_FILE
   sed -i "/security.oauth2.client.accessTokenUri=/c\security.oauth2.client.accessTokenUri=${GATEWAY_ELB}/oauth/token" $CONF_FILE
   sed -i "/security.oauth2.client.userAuthorizationUri=/c\security.oauth2.client.userAuthorizationUri=${GATEWAY_ELB}/oauth/authorize" $CONF_FILE
-  sed -i "/security.oauth2.resource.userInfoUri=/c\security.oauth2.resource.userInfoUri=${GATEWAY_ELB}/permissions" $CONF_FILE
+  sed -i "/security.oauth2.resource.userInfoUri=/c\security.oauth2.resource.userInfoUri=${GATEWAY_ELB}/permissions" $CONF_FILEj
+  sed -i "/spring.datasource.url=/c\spring.datasource.url=${MYSQL_URL}" $CONF_FILE
+  sed -i "/spring.datasource.password=/c\spring.datasource.password=${GATEWAY_PASSWORD}" $CONF_FILE
   echo "Updated database properties in $CONF_FILE"
 fi
-
 
 if [[ -f /settings/https.properties ]]; then
   echo "" >> $CONF_FILE
@@ -47,7 +46,7 @@ if [[ -f $TRUSTSTORE_FILE ]]; then
 fi
 
 SYSTEM_PROPS=/settings/system.properties
-CORRECT_SYS_PROPS=/etc/volume-manager/system.properties
+CORRECT_SYS_PROPS=/etc/volume-gateway/system.properties
 if [[ -f $SYSTEM_PROPS ]]; then
   cp $SYSTEM_PROPS $CORRECT_SYS_PROPS
   sed -i "/javax.net.ssl.keyStore=/c\javax.net.ssl.keyStore=$KEYSTORE_FILE" $CORRECT_SYS_PROPS

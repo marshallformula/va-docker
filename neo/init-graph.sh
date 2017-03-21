@@ -12,7 +12,6 @@ if [[ -f /etc/neo4j/neo4j.conf ]]; then
     echo "Updated connector properties in /etc/neo4j/neo4j.conf"
 fi
 
-# GRAPH_PASSWORD="password"
 
 echo "Contacting Neo4J server using HTTP"
 /sbin/service neo4j start > /dev/null 2>&1

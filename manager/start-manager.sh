@@ -3,5 +3,5 @@
 set -e
 set -o pipefail
 
-service vamonitor start
-tail -F /var/log/vamonitor.out
+service volume-manager start
+tail -F /var/log/volume-manager.out

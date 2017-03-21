@@ -3,9 +3,9 @@ echo "========================="
 echo "Installing volume-streams"
 echo "========================="
 
-# for file in /va/volume-streams/build/dist/*.noarch.rpm; do
-#   rpm -ivh "$file"
-# done;
+for file in /va/volume-streams/build/dist/*.noarch.rpm; do
+  rpm -ivh "$file"
+done;
 
 for file in /code/cre-amp/build/dist/*.noarch.rpm; do
   rpm -ivh "$file"
@@ -19,6 +19,12 @@ for file in /code/hook-tasks/build/dist/*.noarch.rpm; do
   rpm -ivh "$file"
 done;
 
+# for docker
+SERVICE_FILE=/etc/init.d/volume-streams
+if [[ -f $SERVICE_FILE ]]; then
+  sed -i "/serviceUser=\"va\"/c\serviceUser=\"root\"" $SERVICE_FILE
+  sed -i "/serviceGroup=\"va\"/c\serviceGroup=\"root\"" $SERVICE_FILE
+fi
 
 STREAMS_PROPERTIES=/etc/volume-streams/application.properties
 if [[ -f $STREAMS_PROPERTIES ]]; then
@@ -50,6 +56,7 @@ do
     sed -i "/hook.task.discover.accounts.account.name.property=/c\hook.task.discover.accounts.account.name.property=mission" $f
     sed -i "/hook.task.discover.accounts.default.role=/c\hook.task.discover.accounts.default.role=TECHREADONLY" $f
     sed -i "/hook.task.discover.accounts.networks=/c\hook.task.discover.accounts.networks=A:NETA,J:NETJ,M:NETM" $f
+    sed -i "/hook.task.discover.accounts.overlays=/c\hook.task.discover.accounts.overlays=INT-A,INT-B,INT-C" $f
     sed -i "/hook.task.poll.accounts.for.describes.interval.ms=/c\hook.task.poll.accounts.for.describes.interval.ms=300500" $f
     sed -i "/hook.task.poll.accounts.for.events.interval.ms=/c\hook.task.poll.accounts.for.events.interval.ms=300000" $f
     sed -i "/rules.execution.interval.ms=/c\rules.execution.interval.ms=120000" $f
@@ -63,5 +70,16 @@ do
     echo "Updated properties in $f"
 done
 
+
+KEYSTORE_FILE=/settings/keystore.jks
+TRUSTSTORE_FILE=/settings/truststore.jks
+
+SYSTEM_PROPS=/settings/system.properties
+CORRECT_SYS_PROPS=/etc/volume-gateway/system.properties
+if [[ -f $SYSTEM_PROPS ]]; then
+  cp $SYSTEM_PROPS $CORRECT_SYS_PROPS
+  sed -i "/javax.net.ssl.keyStore=/c\javax.net.ssl.keyStore=$KEYSTORE_FILE" $CORRECT_SYS_PROPS
+  sed -i "/javax.net.ssl.trustStore=/c\javax.net.ssl.trustStore=$TRUSTSTORE_FILE" $CORRECT_SYS_PROPS
+fi
 
 exec "$@"

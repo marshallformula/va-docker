@@ -1,72 +1,74 @@
 version: '3'
 services: 
   zoo1: 
-    image: zk
+    image: va-zk
     ports:
       - 2181:2181
+    env_file: ./env
     environment:
       ZOO_MY_ID: 1
-      ZOO_SERVERS: server.1=zoo1:2888:3888 server.2=zoo2:2888:3888 server.3=zoo3:2888:3888
 
   zoo2:
-    image: zk
+    image: va-zk
     ports:
       - 2182:2181
+    env_file: ./env
     environment: 
       ZOO_MY_ID: 2
-      ZOO_SERVERS: server.1=zoo1:2888:3888 server.2=zoo2:2888:3888 server.3=zoo3:2888:3888
 
   zoo3:
-    image: zk
+    image: va-zk
     ports:
       - 2183:2181
+    env_file: ./env
     environment:
       ZOO_MY_ID: 3
-      ZOO_SERVERS: server.1=zoo1:2888:3888 server.2=zoo2:2888:3888 server.3=zoo3:2888:3888
 
   neo:
-    image: vneo
+    image: va-neo
     ports: 
       - 7474:7474
       - 7687:7687
+    env_file: ./env
 
   manager: 
-    image: manager
+    image: va-manager
     ports: 
       - 8888:8080
-    environment:
-      GRAPH_HOST: neo
-      GRAPH_USER: neo4j
-      GRAPH_PASSWORD: password
-      ZOOKEEPER_CONNECT: zoo1:2181,zoo2:2181,zoo3:2181
+    env_file: ./env
 
   streams:
-    image: streams
+    image: va-streams
     ports:
       - 8989:8080
     volumes:
       - ~/workspace/va/cre:/code
       - ~/workspace/va/volume-analytics:/va
-    environment:
-      KAFKA_CONNECT: zoo1:9092,zoo2:9092,zoo3:9092
-      ZOOKEEPER_CONNECT: zoo1:2181,zoo2:2181,zoo3:2181
-      GRAPH_HOST: neo
-      GRAPH_USER: neo4j
-      GRAPH_PASSWORD: password
+    env_file: ./env
     depends_on:
       - zoo1
       - zoo2
       - zoo3
       - neo
 
-  webapp:
-    image: webapp
-    ports:
-      - 9001:9001
+  vmysql:
+    image: va-mysql
+    ports: 
+      - 3306:3306
+    env_file: ./env
+
+  gateway:
+    image: va-gateway
     volumes:
-      - ~/workspace/va/cre:/code
-    environment:
-      GRAPH_HOST: neo
-      GRAPH_USER: neo4j
-      GRAPH_PASSWORD: password
-      ZOOKEEPER_CONNECT: zoo1:2181,zoo2:2181,zoo3:2181
+      - ~/workspace/va/volume-analytics:/va
+    ports:
+      - 9999:8080
+    env_file: ./env
+
+  # webapp:
+  #   image: va-webapp
+  #   ports:
+  #     - 9001:9001
+  #   volumes:
+  #     - ~/workspace/va/cre:/code
+  #   env_file: ./env

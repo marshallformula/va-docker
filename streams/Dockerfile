@@ -5,7 +5,7 @@ COPY volume.repo /etc/yum.repos.d/volume.repo
 RUN yum update -y
 RUN yum install -y initscripts
 RUN yum install -y java-1.8.0-openjdk
-RUN yum install -y volume-streams
+# RUN yum install -y volume-streams
 RUN yum clean all
 
 RUN curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py"
@@ -25,6 +25,7 @@ RUN mkdir -p /root/.aws && \
 
 COPY credentials /root/.aws
 
+ADD settings /settings
 
 EXPOSE 8080
 ENTRYPOINT ["/entrypoint.sh"]

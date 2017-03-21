@@ -8,6 +8,13 @@ for file in /code/cre-web/build/dist/*.noarch.rpm; do
   rpm -ivh "$file"
 done;
 
+# for docker
+SERVICE_FILE=/etc/init.d/volume-streams
+if [[ -f $SERVICE_FILE ]]; then
+  sed -i "/serviceUser=\"va\"/c\serviceUser=\"root\"" $SERVICE_FILE
+  sed -i "/serviceGroup=\"va\"/c\serviceGroup=\"root\"" $SERVICE_FILE
+fi
+
 WEBAPP_PROPERTIES=/etc/cre-web/application.properties
 if [[ -f $WEBAPP_PROPERTIES ]]; then
     sed -i "/graph.url=/c\graph.url=bolt://${GRAPH_HOST}:7687" $WEBAPP_PROPERTIES
