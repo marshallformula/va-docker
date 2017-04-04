@@ -17,6 +17,7 @@ fi
 
 CONF_FILE=/etc/volume-manager/application.properties
 if [[ -f $CONF_FILE ]]; then
+  sed -i "/redirect.port=/c\redirect.port=8883" $CONF_FILE
   sed -i "/graph.url=/c\graph.url=bolt://${GRAPH_HOST}:7687" $CONF_FILE
   sed -i "/graph.username=/c\graph.username=${GRAPH_USER}" $CONF_FILE
   sed -i "/graph.password=/c\graph.password=${GRAPH_PASSWORD}" $CONF_FILE

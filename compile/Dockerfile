@@ -28,5 +28,3 @@ ENV PATH      $NVM_DIR/versions/node/v$NODE_VERSION/bin:/opt/gradle/gradle-3.4.1
 WORKDIR /code
 
 CMD ["gradle", "clean", "rpm"]
-
-

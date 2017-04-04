@@ -20,5 +20,8 @@ RUN chmod +x /start-gateway.sh
 ADD settings /settings
 
 EXPOSE 8080
+EXPOSE 8443
+EXPOSE 443
+
 ENTRYPOINT ["/entry-point.sh"]
 CMD ["sh", "/start-gateway.sh"]

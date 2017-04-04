@@ -10,12 +10,13 @@ done;
 # for docker
 SERVICE_FILE=/etc/init.d/volume-gateway
 if [[ -f $SERVICE_FILE ]]; then
-  sed -i "/serviceUser=\"va\"/c\serviceUser=\"root\"" $SERVICE_FILE
-  sed -i "/serviceGroup=\"va\"/c\serviceGroup=\"root\"" $SERVICE_FILE
+  sed -i "/serviceUser=/c\serviceUser=\"root\"" $SERVICE_FILE
+  sed -i "/serviceGroup=/c\serviceGroup=\"root\"" $SERVICE_FILE
 fi
 
 CONF_FILE=/etc/volume-gateway/application.properties
 if [[ -f $CONF_FILE ]]; then
+  sed -i "/redirect.port=/c\redirect.port=9443" $CONF_FILE
   sed -i "/kafka.servers=/c\kafka.servers=${KAFKA_CONNECT}" $CONF_FILE
   sed -i "/zookeeper.servers=/c\zookeeper.servers=${ZOOKEEPER_CONNECT}" $CONF_FILE
   sed -i "/graph.url=/c\graph.url=bolt://${GRAPH_HOST}:7687" $CONF_FILE

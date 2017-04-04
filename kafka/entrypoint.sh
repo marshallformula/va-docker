@@ -25,9 +25,6 @@ echo "num.partitions=10" >> /etc/kafka/kafka.properties
 echo "default.replication.factor=3" >> /etc/kafka/kafka.properties
 echo "min.insync.replicas=2" >> /etc/kafka/kafka.properties
 
-# /sbin/service kafka stop
-# /sbin/service zookeper stop
-
 echo "ZOOKEEPER/KAFKA INIT COMPLETE"
 
 exec "$@"
