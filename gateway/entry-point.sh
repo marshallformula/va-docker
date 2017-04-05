@@ -24,7 +24,7 @@ if [[ -f $CONF_FILE ]]; then
   sed -i "/graph.password=/c\graph.password=${GRAPH_PASSWORD}" $CONF_FILE
   sed -i "/security.oauth2.client.clientSecret=/c\security.oauth2.client.clientSecret=${GATEWAY_OAUTH_PASSWORD}" $CONF_FILE
   sed -i "/security.oauth2.client.accessTokenUri=/c\security.oauth2.client.accessTokenUri=${GATEWAY_ELB}/oauth/token" $CONF_FILE
-  sed -i "/security.oauth2.client.userAuthorizationUri=/c\security.oauth2.client.userAuthorizationUri=${GATEWAY_ELB}/oauth/authorize" $CONF_FILE
+  sed -i "/security.oauth2.client.userAuthorizationUri=/c\security.oauth2.client.userAuthorizationUri=${GATEWAY_ELB_EXTERNAL}/oauth/authorize" $CONF_FILE
   sed -i "/security.oauth2.resource.userInfoUri=/c\security.oauth2.resource.userInfoUri=${GATEWAY_ELB}/permissions" $CONF_FILEj
   sed -i "/spring.datasource.url=/c\spring.datasource.url=${MYSQL_URL}" $CONF_FILE
   sed -i "/spring.datasource.password=/c\spring.datasource.password=${GATEWAY_PASSWORD}" $CONF_FILE

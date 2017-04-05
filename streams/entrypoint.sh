@@ -75,7 +75,7 @@ KEYSTORE_FILE=/settings/keystore.jks
 TRUSTSTORE_FILE=/settings/truststore.jks
 
 SYSTEM_PROPS=/settings/system.properties
-CORRECT_SYS_PROPS=/etc/volume-gateway/system.properties
+CORRECT_SYS_PROPS=/etc/volume-streams/system.properties
 if [[ -f $SYSTEM_PROPS ]]; then
   cp $SYSTEM_PROPS $CORRECT_SYS_PROPS
   sed -i "/javax.net.ssl.keyStore=/c\javax.net.ssl.keyStore=$KEYSTORE_FILE" $CORRECT_SYS_PROPS

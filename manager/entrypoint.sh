@@ -26,8 +26,9 @@ if [[ -f $CONF_FILE ]]; then
   sed -i "/spring.datasource.password=/c\spring.datasource.password=${MANAGER_PASSWORD}" $CONF_FILE
   sed -i "/security.oauth2.client.clientSecret=/c\security.oauth2.client.clientSecret=${MANAGER_OAUTH_PASSWORD}" $CONF_FILE
   sed -i "/security.oauth2.client.accessTokenUri=/c\security.oauth2.client.accessTokenUri=${GATEWAY_ELB}/oauth/token" $CONF_FILE
-  sed -i "/security.oauth2.client.userAuthorizationUri=/c\security.oauth2.client.userAuthorizationUri=${GATEWAY_ELB}/oauth/authorize" $CONF_FILE
+  sed -i "/security.oauth2.client.userAuthorizationUri=/c\security.oauth2.client.userAuthorizationUri=${GATEWAY_ELB_EXTERNAL}/oauth/authorize" $CONF_FILE
   sed -i "/security.oauth2.resource.userInfoUri=/c\security.oauth2.resource.userInfoUri=${GATEWAY_ELB}/permissions" $CONF_FILE
+  echo "server.session.cookie.name=MANAGERSESSIONID" >> $CONF_FILE
   echo "Updated database properties in $CONF_FILE"
 fi
 

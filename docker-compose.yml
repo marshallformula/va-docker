@@ -31,28 +31,28 @@ services:
       - 7687:7687
     env_file: ./env
 
-  # manager: 
-  #   image: va-manager
-  #   volumes:
-  #     - ~/workspace/va/volume-analytics:/va
-  #   ports: 
-  #     - 8883:8443
-  #     - 8888:8080
-  #   env_file: ./env
+  manager: 
+    image: va-manager
+    volumes:
+      - ~/workspace/va/volume-analytics:/va
+    ports: 
+      - 8883:8443
+      - 8888:8080
+    env_file: ./env
 
-  # streams:
-  #   image: va-streams
-  #   ports:
-  #     - 8989:8080
-  #   volumes:
-  #     - ~/workspace/va/cre:/code
-  #     - ~/workspace/va/volume-analytics:/va
-  #   env_file: ./env
-  #   depends_on:
-  #     - zoo1
-  #     - zoo2
-  #     - zoo3
-  #     - neo
+  streams:
+    image: va-streams
+    ports:
+      - 8989:8080
+    volumes:
+      - ~/workspace/va/cre:/code
+      - ~/workspace/va/volume-analytics:/va
+    env_file: ./env
+    depends_on:
+      - zoo1
+      - zoo2
+      - zoo3
+      - neo
 
   vmysql:
     image: va-mysql
@@ -69,10 +69,10 @@ services:
       - 9443:8443
     env_file: ./env
 
-  # webapp:
-  #   image: va-webapp
-  #   ports:
-  #     - 9001:9001
-  #   volumes:
-  #     - ~/workspace/va/cre:/code
-  #   env_file: ./env
+  webapp:
+    image: va-webapp
+    ports:
+      - 9009:9001
+    volumes:
+      - ~/workspace/va/cre:/code
+    env_file: ./env

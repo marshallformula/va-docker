@@ -15,6 +15,8 @@ RUN chmod +x /entrypoint.sh
 COPY start-webapp.sh /
 RUN chmod +x /start-webapp.sh
 
-EXPOSE 8080
+ADD settings /settings
+
+EXPOSE 9001
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["sh", "/start-webapp.sh"]
